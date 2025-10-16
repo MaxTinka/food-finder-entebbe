@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Finder Entebbe - Discover Local Eateries</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <h1>Food<span>Finder</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Discover the Best Food in Entebbe</h2>
+            <p>Find restaurants, cafes, and local eateries with authentic Ugandan cuisine and international flavors</p>
+            <div class="search-box">
+                <input type="text" id="mainSearch" placeholder="Search for restaurants, cuisine, or dishes...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="container" id="categories">
+        <div class="section-title">
+            <h2>Popular Categories</h2>
+            <p>Explore food options by category</p>
+        </div>
+        <div class="categories" id="categoriesContainer">
+            <!-- Categories will be loaded by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Featured Restaurants Section -->
+    <section class="container">
+        <div class="section-title">
+            <h2>Featured Restaurants</h2>
+            <p>Curated selection of the best dining spots</p>
+        </div>
+        <div class="restaurants" id="featuredRestaurants">
+            <!-- Featured restaurants will be loaded by JavaScript -->
+        </div>
+        <div class="text-center">
+            <a href="restaurants.html" class="btn btn-primary">View All Restaurants</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container">
+        <div class="section-title">
+            <h2>Why Choose FoodFinder Entebbe?</h2>
+            <p>We make finding and ordering food simple and enjoyable</p>
+        </div>
+        <div class="features" id="featuresContainer">
+            <!-- Features will be loaded by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>FoodFinder Entebbe</h3>
+                    <p>Your guide to the best dining experiences in Entebbe. Discover local flavors and international cuisine.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Entebbe, Uganda</li>
+                        <li><i class="fas fa-phone"></i> +256 756 053 475</li>
+                        <li><i class="fas fa-envelope"></i> info@foodfinderentebbe.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get updates on new restaurants and special offers.</p>
+                    <div class="search-box" style="margin-top: 15px;">
+                        <input type="email" placeholder="Your email address">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>
+                    &copy; <span id="year"></span> FoodFinder Entebbe. All rights reserved. 
+                    <br>
+                    <small>Last updated: <span id="lastUpdated"></span></small>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/restaurant-data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/search.js"></script>
+
+    <!-- Footer Script -->
+    <script>
+        // Display current year dynamically
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Display last updated date of the page
+        const lastModified = new Date(document.lastModified);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("lastUpdated").textContent = lastModified.toLocaleDateString(undefined, options);
+    </script>
+</body>
+</html>

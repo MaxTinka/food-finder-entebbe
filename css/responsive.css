@@ -1,0 +1,80 @@
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero h2, .page-hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p, .page-hero p {
+        font-size: 16px;
+    }
+
+    .categories {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-filter {
+        min-width: 100%;
+    }
+
+    .filter-options {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-box {
+        flex-direction: column;
+        border-radius: 10px;
+    }
+
+    .search-box input, .search-box button {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .restaurants, .restaurants-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
