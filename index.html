@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Finder Entebbe - Discover Local Eateries</title>
+    <title>Food Finder Entebbe - Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
@@ -36,13 +36,13 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h2>Discover the Best Food in Entebbe</h2>
+    <section class="hero" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');">
+        <div class="container hero-content">
+            <h1>Discover the Best Food in Entebbe</h1>
             <p>Find restaurants, cafes, and local eateries with authentic Ugandan cuisine and international flavors</p>
-            <div class="search-box">
+            <div class="hero-actions">
                 <input type="text" id="mainSearch" placeholder="Search for restaurants, cuisine, or dishes...">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
+                <button id="searchBtn" class="btn btn-primary">Search <i class="fas fa-search"></i></button>
             </div>
         </div>
     </section>
@@ -54,7 +54,7 @@
             <p>Explore food options by category</p>
         </div>
         <div class="categories" id="categoriesContainer">
-            <!-- Categories will be loaded by JavaScript -->
+            <!-- Categories loaded dynamically -->
         </div>
     </section>
 
@@ -65,7 +65,7 @@
             <p>Curated selection of the best dining spots</p>
         </div>
         <div class="restaurants" id="featuredRestaurants">
-            <!-- Featured restaurants will be loaded by JavaScript -->
+            <!-- Featured restaurants loaded dynamically -->
         </div>
         <div class="text-center">
             <a href="restaurants.html" class="btn btn-primary">View All Restaurants</a>
@@ -73,13 +73,34 @@
     </section>
 
     <!-- Features Section -->
-    <section class="container">
+    <section class="container why-us">
         <div class="section-title">
             <h2>Why Choose FoodFinder Entebbe?</h2>
             <p>We make finding and ordering food simple and enjoyable</p>
         </div>
         <div class="features" id="featuresContainer">
-            <!-- Features will be loaded by JavaScript -->
+            <!-- Features loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="container testimonials">
+        <div class="section-title">
+            <h2>What Our Users Say</h2>
+        </div>
+        <div class="testimonial-cards">
+            <div class="testimonial-card">
+                <p>"FoodFinder helped me discover amazing local restaurants I never knew existed!"</p>
+                <h4>- Sarah K.</h4>
+            </div>
+            <div class="testimonial-card">
+                <p>"Easy to use and the reviews are genuine. Highly recommend!"</p>
+                <h4>- James M.</h4>
+            </div>
+            <div class="testimonial-card">
+                <p>"The search feature is intuitive and helped me find great food near me quickly."</p>
+                <h4>- Linda T.</h4>
+            </div>
         </div>
     </section>
 
@@ -134,11 +155,10 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="js/restaurant-data.js"></script>
     <script src="js/main.js"></script>
     <script src="js/search.js"></script>
-
-    <!-- Footer Script -->
     <script>
         // Display current year dynamically
         document.getElementById("year").textContent = new Date().getFullYear();

@@ -40,33 +40,89 @@ function setupEventListeners() {
             contactForm.reset();
         });
     }
+
+    // Search functionality
+    const searchInput = document.getElementById('mainSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filtered = restaurants.filter(r => {
+                return r.name.toLowerCase().includes(query) ||
+                       r.category.toLowerCase().includes(query) ||
+                       r.tags.some(tag => tag.toLowerCase().includes(query));
+            });
+            displayRestaurants(filtered);
+        });
+    }
 }
 
-// Load categories on homepage
+// Load categories
 function loadCategories() {
     const categoriesContainer = document.getElementById('categoriesContainer');
     if (!categoriesContainer) return;
     
     categoriesContainer.innerHTML = categories.map(category => `
-        <div class="category-card">
+        <div class="category-card" data-category="${category.name.toLowerCase()}">
             <div class="category-icon">
                 <i class="${category.icon}"></i>
             </div>
             <h3>${category.name}</h3>
         </div>
     `).join('');
-    
-    // Add click event to category cards
+
+    // Add click event to filter restaurants by category
     const categoryCards = document.querySelectorAll('.category-card');
     categoryCards.forEach(card => {
         card.addEventListener('click', function() {
-            const categoryName = this.querySelector('h3').textContent;
-            alert('Showing restaurants in ' + categoryName + ' category');
+            const selectedCategory = this.dataset.category;
+            
+            // Highlight selected card
+            categoryCards.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter restaurants
+            const filtered = restaurants.filter(r => {
+                return r.category.toLowerCase() === selectedCategory || r.tags.some(tag => tag.toLowerCase() === selectedCategory);
+            });
+
+            displayRestaurants(filtered);
         });
     });
 }
 
-// Load featured restaurants on homepage
+// Function to display restaurants dynamically
+function displayRestaurants(list) {
+    const allRestaurantsContainer = document.getElementById('allRestaurants');
+    if (!allRestaurantsContainer) return;
+
+    if (list.length === 0) {
+        allRestaurantsContainer.innerHTML = `<p style="text-align:center; font-weight:bold; margin-top:20px;">No restaurants found.</p>`;
+        return;
+    }
+
+    allRestaurantsContainer.innerHTML = list.map(restaurant => `
+        <div class="restaurant-card" data-category="${restaurant.category}" data-price="${restaurant.price}" data-rating="${restaurant.rating}">
+            <div class="restaurant-img" style="background-image: url('${restaurant.image}')"></div>
+            <div class="restaurant-info">
+                <h3>${restaurant.name}</h3>
+                <div class="restaurant-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> ${restaurant.location}</span>
+                    <span class="rating"><i class="fas fa-star"></i> ${restaurant.rating}</span>
+                </div>
+                <div class="restaurant-tags">
+                    ${restaurant.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+                <p>${restaurant.description}</p>
+                <div class="restaurant-footer">
+                    <span class="price">${restaurant.price}</span>
+                    <button class="btn btn-primary">View Menu</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Load featured restaurants
 function loadFeaturedRestaurants() {
     const featuredContainer = document.getElementById('featuredRestaurants');
     if (!featuredContainer) return;
@@ -83,7 +139,7 @@ function loadFeaturedRestaurants() {
                     <span class="rating"><i class="fas fa-star"></i> ${restaurant.rating}</span>
                 </div>
                 <div class="restaurant-tags">
-                    ${restaurant.tags.map(tag => <span class="tag">${tag}</span>).join('')}
+                    ${restaurant.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                 </div>
                 <p>${restaurant.description}</p>
                 <div class="restaurant-footer">
@@ -93,20 +149,9 @@ function loadFeaturedRestaurants() {
             </div>
         </div>
     `).join('');
-    
-    // Add click event to restaurant cards
-    const restaurantCards = document.querySelectorAll('.restaurant-card');
-    restaurantCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('btn')) {
-                const restaurantName = this.querySelector('h3').textContent;
-                alert('Showing details for ' + restaurantName);
-            }
-        });
-    });
 }
 
-// Load features on homepage
+// Load features
 function loadFeatures() {
     const featuresContainer = document.getElementById('featuresContainer');
     if (!featuresContainer) return;
@@ -122,80 +167,20 @@ function loadFeatures() {
     `).join('');
 }
 
-// Load all restaurants on restaurants page
+// Load all restaurants initially
 function loadAllRestaurants() {
-    const allRestaurantsContainer = document.getElementById('allRestaurants');
-    if (!allRestaurantsContainer) return;
-    
-    allRestaurantsContainer.innerHTML = restaurants.map(restaurant => `
-        <div class="restaurant-card" data-category="${restaurant.category}" data-price="${restaurant.price}" data-rating="${restaurant.rating}">
-            <div class="restaurant-img" style="background-image: url('${restaurant.image}')"></div>
-            <div class="restaurant-info">
-                <h3>${restaurant.name}</h3>
-                <div class="restaurant-meta">
-                    <span><i class="fas fa-map-marker-alt"></i> ${restaurant.location}</span>
-                    <span class="rating"><i class="fas fa-star"></i> ${restaurant.rating}</span>
-                </div>
-                <div class="restaurant-tags">
-                    ${restaurant.tags.map(tag => <span class="tag">${tag}</span>).join('')}
-                </div>
-                <p>${restaurant.description}</p>
-                <div class="restaurant-footer">
-                    <span class="price">${restaurant.price}</span>
-                    <button class="btn btn-primary">View Menu</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    // Setup pagination
-    setupPagination();
+    displayRestaurants(restaurants);
 }
 
-// Setup FAQ functionality
+// Setup FAQ (optional)
 function setupFAQ() {
     const faqQuestions = document.querySelectorAll('.faq-question');
-    
     faqQuestions.forEach(question => {
         question.addEventListener('click', function() {
             const answer = this.nextElementSibling;
             const isActive = answer.classList.contains('active');
-            
-            // Close all answers
-            document.querySelectorAll('.faq-answer').forEach(ans => {
-                ans.classList.remove('active');
-            });
-            
-            // If this answer wasn't active, open it
-            if (!isActive) {
-                answer.classList.add('active');
-            }
-        });
-    });
-}
-
-// Setup pagination for restaurants page
-function setupPagination() {
-    const paginationContainer = document.getElementById('pagination');
-    if (!paginationContainer) return;
-    
-    paginationContainer.innerHTML = `
-        <button class="active">1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>Next</button>
-    `;
-    
-    const paginationButtons = paginationContainer.querySelectorAll('button');
-    paginationButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            paginationButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button if it's a number
-            if (!isNaN(parseInt(this.textContent))) {
-                this.classList.add('active');
-            }
-            alert('Page ' + this.textContent + ' would load here');
+            document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.remove('active'));
+            if (!isActive) answer.classList.add('active');
         });
     });
 }

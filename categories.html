@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Finder Entebbe - Discover Local Eateries</title>
+    <title>Food Finder Entebbe - Categories</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
@@ -21,8 +21,8 @@
                 <nav>
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="restaurants.html" class="active">Restaurants</a></li>
-                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="categories.html" class="active">Categories</a></li>
                         <li><a href="about.html">About</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -38,12 +38,8 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h2>Discover the Best Food in Entebbe</h2>
-            <p>Find restaurants, cafes, and local eateries with authentic Ugandan cuisine and international flavors</p>
-            <div class="search-box">
-                <input type="text" id="mainSearch" placeholder="Search for restaurants, cuisine, or dishes...">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
-            </div>
+            <h2>Explore Food Categories in Entebbe</h2>
+            <p>Click a category below to find restaurants that serve your favorite cuisine.</p>
         </div>
     </section>
 
@@ -51,39 +47,25 @@
     <section class="container" id="categories">
         <div class="section-title">
             <h2>Popular Categories</h2>
-            <p>Explore food options by category</p>
+            <p>Discover restaurants by category</p>
         </div>
         <div class="categories" id="categoriesContainer">
-            <!-- Categories loaded by JS -->
+            <!-- Categories will be loaded by JavaScript -->
+        </div>
+        <div class="text-center" style="margin-top: 15px;">
+            <button class="btn btn-primary" id="showAllBtn">Show All Restaurants</button>
         </div>
     </section>
 
-    <!-- All Restaurants Section -->
+    <!-- Restaurants Section -->
     <section class="container">
         <div class="section-title">
             <h2>Restaurants</h2>
-            <p>Explore all available restaurants in Entebbe</p>
         </div>
         <div class="restaurants" id="allRestaurants">
-            <!-- Restaurants loaded by JS -->
+            <!-- All restaurants or filtered restaurants will be displayed here -->
         </div>
     </section>
-
-    <!-- Restaurant Modal -->
-    <div id="restaurantModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-img" id="modalImage"></div>
-            <div class="modal-info">
-                <h2 id="modalName"></h2>
-                <p id="modalLocation"></p>
-                <p id="modalRating"></p>
-                <p id="modalPrice"></p>
-                <div id="modalTags"></div>
-                <p id="modalDescription"></p>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer>
@@ -104,7 +86,7 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="restaurants.html">Restaurants</a></li>
-                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="categories.html">Categories</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -136,54 +118,31 @@
         </div>
     </footer>
 
+    <!-- JS Scripts -->
     <script src="js/restaurant-data.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/search.js"></script>
 
-    <!-- Modal Script -->
     <script>
-        const modal = document.getElementById("restaurantModal");
-        const modalImg = document.getElementById("modalImage");
-        const modalName = document.getElementById("modalName");
-        const modalLocation = document.getElementById("modalLocation");
-        const modalRating = document.getElementById("modalRating");
-        const modalPrice = document.getElementById("modalPrice");
-        const modalTags = document.getElementById("modalTags");
-        const modalDescription = document.getElementById("modalDescription");
-        const closeBtn = document.querySelector(".close");
-
-        function openModal(restaurant) {
-            modalImg.style.backgroundImage = `url('${restaurant.image}')`;
-            modalName.textContent = restaurant.name;
-            modalLocation.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${restaurant.location}`;
-            modalRating.innerHTML = `<i class="fas fa-star"></i> ${restaurant.rating}`;
-            modalPrice.textContent = restaurant.price;
-            modalTags.innerHTML = restaurant.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-            modalDescription.textContent = restaurant.description;
-            modal.style.display = "block";
-        }
-
-        closeBtn.onclick = () => modal.style.display = "none";
-        window.onclick = e => { if (e.target == modal) modal.style.display = "none"; }
-
-        // Add click events to restaurant cards after DOM load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('allRestaurants').addEventListener('click', e => {
-                const card = e.target.closest('.restaurant-card');
-                if (card) {
-                    const restaurantName = card.querySelector('h3').textContent;
-                    const restaurant = restaurants.find(r => r.name === restaurantName);
-                    if (restaurant) openModal(restaurant);
-                }
-            });
-        });
-    </script>
-
-    <!-- Footer Script -->
-    <script>
+        // Display current year dynamically
         document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Display last updated date of the page
         const lastModified = new Date(document.lastModified);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById("lastUpdated").textContent = lastModified.toLocaleDateString(undefined, options);
+
+        // Show all restaurants when "Show All" button is clicked
+        const showAllBtn = document.getElementById('showAllBtn');
+        if (showAllBtn) {
+            showAllBtn.addEventListener('click', function() {
+                loadAllRestaurantsOnCategoryPage();
+
+                // Remove active class from all category cards
+                const categoryCards = document.querySelectorAll('.category-card');
+                categoryCards.forEach(card => card.classList.remove('active'));
+            });
+        }
     </script>
 </body>
 </html>

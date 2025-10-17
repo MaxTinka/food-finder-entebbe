@@ -1,88 +1,61 @@
-// Search functionality
+// Wait for DOM to load
 document.addEventListener('DOMContentLoaded', function() {
-    setupSearch();
-    setupFilters();
+    const searchInput = document.getElementById('mainSearch');
+    const searchBtn = document.getElementById('searchBtn');
+
+    if (searchInput && searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            performSearch(searchInput.value.trim());
+        });
+
+        // Optional: search as you type
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value.trim());
+            }
+        });
+    }
 });
 
-// Setup main search
-function setupSearch() {
-    const searchBtn = document.getElementById('searchBtn');
-    const mainSearch = document.getElementById('mainSearch');
-    const filterSearchBtn = document.getElementById('filterSearchBtn');
-    const restaurantSearch = document.getElementById('restaurantSearch');
-    
-    if (searchBtn && mainSearch) {
-        searchBtn.addEventListener('click', function() {
-            performSearch(mainSearch.value);
-        });
-        
-        mainSearch.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch(this.value);
-            }
-        });
-    }
-    
-    if (filterSearchBtn && restaurantSearch) {
-        filterSearchBtn.addEventListener('click', function() {
-            performRestaurantSearch();
-        });
-        
-        restaurantSearch.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performRestaurantSearch();
-            }
-        });
-    }
-}
-
-// Setup filter functionality
-function setupFilters() {
-    const categoryFilter = document.getElementById('categoryFilter');
-    const priceFilter = document.getElementById('priceFilter');
-    const ratingFilter = document.getElementById('ratingFilter');
-    
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', performRestaurantSearch);
-    }
-    
-    if (priceFilter) {
-        priceFilter.addEventListener('change', performRestaurantSearch);
-    }
-    
-    if (ratingFilter) {
-        ratingFilter.addEventListener('change', performRestaurantSearch);
-    }
-}
-
-// Perform main search
+// Perform search on restaurants
 function performSearch(query) {
-    if (query.trim() !== '') {
-        alert('Searching for: ' + query);
-        // In a real application, this would filter restaurants
-        // and update the UI accordingly
-    } else {
-        alert('Please enter a search term');
-    }
-}
+    query = query.toLowerCase();
 
-// Perform restaurant search with filters
-function performRestaurantSearch() {
-    const searchQuery = document.getElementById('restaurantSearch')?.value || '';
-    const category = document.getElementById('categoryFilter')?.value || '';
-    const price = document.getElementById('priceFilter')?.value || '';
-    const rating = document.getElementById('ratingFilter')?.value || '';
-    
-    // In a real application, this would filter the restaurant list
-    // based on the selected criteria
-    let filterMessage = 'Applying filters:';
-    
-    if (searchQuery) filterMessage += ` Search: "${searchQuery}"`;
-    if (category) filterMessage += ` Category: ${category}`;
-    if (price) filterMessage += ` Price: ${price}`;
-    if (rating) filterMessage += ` Min Rating: ${rating}`;
-    
-    console.log(filterMessage);
-    // This is where you would update the restaurant grid
-    // with the filtered results
+    const allRestaurantsContainer = document.getElementById('allRestaurants');
+    if (!allRestaurantsContainer) return;
+
+    const filtered = restaurants.filter(restaurant => {
+        const nameMatch = restaurant.name.toLowerCase().includes(query);
+        const locationMatch = restaurant.location.toLowerCase().includes(query);
+        const categoryMatch = restaurant.category.toLowerCase().includes(query);
+        const tagsMatch = restaurant.tags.some(tag => tag.toLowerCase().includes(query));
+
+        return nameMatch || locationMatch || categoryMatch || tagsMatch;
+    });
+
+    if (filtered.length === 0) {
+        allRestaurantsContainer.innerHTML = `<p style="text-align:center; font-weight:bold; margin-top:20px;">No restaurants found for "${query}"</p>`;
+        return;
+    }
+
+    allRestaurantsContainer.innerHTML = filtered.map(restaurant => `
+        <div class="restaurant-card" data-category="${restaurant.category}" data-price="${restaurant.price}" data-rating="${restaurant.rating}">
+            <div class="restaurant-img" style="background-image: url('${restaurant.image}')"></div>
+            <div class="restaurant-info">
+                <h3>${restaurant.name}</h3>
+                <div class="restaurant-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> ${restaurant.location}</span>
+                    <span class="rating"><i class="fas fa-star"></i> ${restaurant.rating}</span>
+                </div>
+                <div class="restaurant-tags">
+                    ${restaurant.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+                <p>${restaurant.description}</p>
+                <div class="restaurant-footer">
+                    <span class="price">${restaurant.price}</span>
+                    <button class="btn btn-primary">View Menu</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
